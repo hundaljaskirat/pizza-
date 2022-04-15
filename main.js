@@ -1,35 +1,54 @@
-menu_list_array = ["Veg Margherita Pizza",
-                        "Chicken Tandoori Pizza",
-                        "Veg Supreme Pizza",
-                        "Paneer Tikka Pizza",
-                        "Deluxe Veggie Pizza",
-                        "Veg Extravaganza Pizza"];
+var mouseEvent = "empty";
+
+
+    canvas = document.getElementById('myCanvas');
+    ctx = canvas.getContext("2d");
     
-    function getmenu(){
-        var htmldata="";
-        menu_list_array.sort();
-        for(var i=0;i<menu_list_array.length;i++){
-            htmldata=htmldata+ menu_list_array[i] + '<br>'
-        }
-        document.getElementById("").innerHTML = htmldata;
-        //give the appropriate id name as display_menu 
+    color = "black";
+    width_of_line = 2;
+    canvas.addEventListener("mousedown", my_mousedown);
+    
+    function my_mousedown(e)
+    {
+
+        color = document.getElementById("color").value;
+        width_of_line = document.getElementById("width_of_line").value;
+        radius = document.getElementById("radius").value;
+        mouseEvent = "mouseDown";
     }
 
-    function add_item(){
-        var htmldata;
-		var imgtags='<img id="im1" src="pizzaImg.png">'
-        var item=document.getElementById("add_item").value;
-        // use the sort function as - menu_list_array.sort();
-        htmldata="";
-        for(var i=0;i<menu_list_array.length;i++){
-            htmldata=htmldata+imgtags+ menu_list_array[i]+'<br>';
+    canvas.addEventListener("mousemove", my_mousemove);
+    function my_mousemove(e)
+    {
+        current_position_of_mouse_x = e.clientX - canvas.offsetLeft;
+        current_position_of_mouse_y = e.clientY - canvas.offsetTop;
+
+        if (mouseEvent == "mouseDown") {
+        console.log("Current position of x and y coordinates = ");
+        console.log("x  = " + current_position_of_mouse_x + "y = " + current_position_of_mouse_y);
+        ctx.beginPath();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width_of_line;
+        ctx.arc(current_position_of_mouse_x, current_position_of_mouse_y, radius ,0 , 2 * Math.PI);
+        ctx.stroke();
         }
-         document.getElementById("display_addedmenu").innerHTML = htmldata;
-		
+
     }
 
-function add_top(){
-	var item=document.getElementById("add_item").value;
-    menu_list_array.push(item);
-	add_item();
+    canvas.addEventListener("mouseup", my_mouseup);
+    function my_mouseup(e)
+    {
+        mouseEvent = "mouseUP";
+    }
+
+    canvas.addEventListener("mouseleave", my_mouseleave);
+    function my_mouseleave(e)
+    {
+        mouseEvent = "mouseleave";
+    }
+
+
+//Additional Activity
+function clearArea() {
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 }
